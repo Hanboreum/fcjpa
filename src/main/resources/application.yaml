@@ -1,1 +1,22 @@
-spring.application.name=jpa
+server:
+  port:8081
+#JDBC
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/toy2
+    password: 878878
+
+  #JPA
+jpa:
+  database-platform: org.hibernate.dialect.MySQL8Dialect
+  properties:
+    hibernate:
+      format_sql: true
+  hibernate:
+    ddl-auto: create
+  show-sql: true
+
+
+
