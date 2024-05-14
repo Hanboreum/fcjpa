@@ -46,11 +46,15 @@ public class BookService {
             Book book = optional.get(); //db에서 가져온 book 수정
             book.setTitle(reqBook.getTitle());//수정 동작
             book.setPrice(reqBook.getPrice());
-           /* book.setPage(reqBook.getPage());
-            book.setAuthor(reqBook.getAuthor());*/
-            return book; //수정이 이루어짐
+            //return book; //수정이 이루어짐
+            return bookRepository.save(book); //
         } else{
             throw new IllegalArgumentException("Book not found" + id) ;
         }
+    }
+
+    @Transactional
+    public void getByDelete(Long id) {
+         bookRepository.deleteById(id);
     }
 }

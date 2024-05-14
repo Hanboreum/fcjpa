@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.transform.OutputKeys;
+
 
 //@Controller //뷰 사용할 때. view -> forward, redirect,@ResponseBody Json
 @RestController //뷰 없이 할 때, React 사용시
@@ -45,6 +47,17 @@ public class BookController {
             Book b= bookService.update(id, book);
             return ResponseEntity.ok(b);
             //return new ResponseEntity<>(bookService.update(id, book),HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/book/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        try{
+            bookService.getByDelete(id);
+            return ResponseEntity.ok().build();
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.notFound().build();
