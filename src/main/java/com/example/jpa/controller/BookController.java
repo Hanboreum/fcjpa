@@ -37,4 +37,17 @@ public class BookController {
             return new ResponseEntity<>(id,HttpStatus.NOT_FOUND);
         }
     }
+
+    //수정
+    @PutMapping("/book/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Book book){
+        try{
+            Book b= bookService.update(id, book);
+            return ResponseEntity.ok(b);
+            //return new ResponseEntity<>(bookService.update(id, book),HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

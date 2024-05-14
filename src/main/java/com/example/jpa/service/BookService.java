@@ -36,4 +36,21 @@ public class BookService {
             throw new IllegalArgumentException("Book not found" + id) ;
         }
     }
+
+    //수정
+    @Transactional//중요
+    public Book update(Long id, Book reqBook) {
+        Optional<Book> optional = bookRepository.findById(id);//id로 책 읽어옴
+
+        if(optional.isPresent()){
+            Book book = optional.get(); //db에서 가져온 book 수정
+            book.setTitle(reqBook.getTitle());//수정 동작
+            book.setPrice(reqBook.getPrice());
+           /* book.setPage(reqBook.getPage());
+            book.setAuthor(reqBook.getAuthor());*/
+            return book; //수정이 이루어짐
+        } else{
+            throw new IllegalArgumentException("Book not found" + id) ;
+        }
+    }
 }
