@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,5 +25,15 @@ public class BookService {
 
     public Book register(Book book) {
         return bookRepository.save(book);
+    }
+
+    public Book getById(Long id) {
+         Optional<Book> optional =  bookRepository.findById(id); //id가 없다면
+
+        if(optional.isPresent()){//존재시
+            return optional.get();
+        }else {
+            throw new IllegalArgumentException("Book not found" + id) ;
+        }
     }
 }

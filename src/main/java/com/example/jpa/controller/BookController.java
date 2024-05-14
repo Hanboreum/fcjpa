@@ -19,12 +19,22 @@ public class BookController {
 
     //GET: http://localhost8080/api/book
     @GetMapping("/book")
-    public ResponseEntity<?> findAll(){
+    public ResponseEntity<?> getAll(){
         return new ResponseEntity<>(bookService.getList(), HttpStatus.OK);//200
     }
 
     @PostMapping("/book")
     public ResponseEntity<?> save(@RequestBody Book book){ //json으로 받기
         return new ResponseEntity<>(bookService.register(book), HttpStatus.CREATED);//201
+    }
+
+    @GetMapping("/book/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id){
+        try {
+            return new ResponseEntity<>(bookService.getById(id), HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(id,HttpStatus.NOT_FOUND);
+        }
     }
 }
