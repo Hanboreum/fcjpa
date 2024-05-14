@@ -11,15 +11,15 @@ import javax.xml.transform.OutputKeys;
 
 
 //@Controller //뷰 사용할 때. view -> forward, redirect,@ResponseBody Json
-@RestController //뷰 없이 할 때, React 사용시
-@RequestMapping("/api")
+@RestController //뷰 없이 할 때, React 사용시. rest는 뷰를 사용 못한다
+@RequestMapping("/api") // <-- 외부 경로 CORS
 @RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
 
 
-    //GET: http://localhost8080/api/book
+    //GET: http://localhost8080/api/book : OpenAPI <-- key발급(JWT)
     @GetMapping("/book")
     public ResponseEntity<?> getAll(){
         return new ResponseEntity<>(bookService.getList(), HttpStatus.OK);//200

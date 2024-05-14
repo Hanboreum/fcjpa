@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <table border="1">
+     <tr>
+         <td>제목</td>
+         <td>가격</td>
+         <td>페이지</td>
+     </tr>
+     <tr th:each="book: ${list}">
+         <td th:text = "${book.title}">제목</td>
+         <td th:text = "${book.price}">price</td>
+         <td th:text = "${book.page}">page</td>
+     </tr>
+ </table>
+</body>
+</html>
