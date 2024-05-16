@@ -1,6 +1,7 @@
 package com.example.jpa.controller;
 
 import com.example.jpa.entity.Book;
+import com.example.jpa.repository.BookRepository;
 import com.example.jpa.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import javax.xml.transform.OutputKeys;
 public class BookController {
 
     private final BookService bookService;
+    private final BookRepository bookRepository;
 
 
     //GET: http://localhost8080/api/book : OpenAPI <-- key발급(JWT)
@@ -62,5 +64,13 @@ public class BookController {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
+    }
+    
+    @GetMapping("/book/price/{price}")
+    public ResponseEntity<?> getByPrice(@PathVariable int price){
+        //return new ResponseEntity<>(bookRepository.getByPrice(price).HttpStatus.Ok);
+       // bookRepository.getByPrice(price);
+        //return ResponseEntity.ok().build();
+        return new ResponseEntity<>(bookRepository.getByPrice(price), HttpStatus.OK);//200
     }
 }
