@@ -18,7 +18,7 @@ public class RouteController {
 
     private final BookService bookService;
 
-    @GetMapping("/list")
+    @GetMapping("/list") //http://localhost:8080/ui/list
     public String bookList(Model model){
         List<Book> list = bookService.getList();
         model.addAttribute("list", list);
