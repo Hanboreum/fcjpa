@@ -1,20 +1,44 @@
 package com.example.jpa.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ManyToAny;
+
+import java.util.Set;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 50, nullable = false, unique = true) //null X, unique
+    private String username; //spring security , 아이디는 무조건 username
+    private String password; //pw무조건 password. 암호화 해서 저장
+    private String uname; //실명
+    private String email;
+
+
+    /*
+    table member_roles
+    [ member_id (fk),
+    roles_id(fk) ]  : 이 두개를 묶어 pk
+     */
+    //권한 (한명이 여러개 가능) set = 중복불가
+    @ManyToMany(fetch = FetchType.EAGER)// M : N ,  사용해 멤버 권한 정보 가져오기, LAZY : 권한 정보 가져오지 않음
+    @JoinTable(//자동 생성, 두 테이블의 pk, jpa에서 자동으로 값 할당
+            name = "member_roles",//table 명
+            joinColumns = @JoinColumn(name = "member_id"), //fk의 이름
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles; //role - 1.USER, 2.MANAGER, 3.ADMIN
+
 }
 
 /*
