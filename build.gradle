@@ -30,6 +30,9 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//스프링 시큐리티 추가: 모든 웹페이지는 로그인(인증)을 거쳐야 함. -user( 임시 아디디), password(임의 생성)
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 }
 
 tasks.named('bootBuildImage') {
