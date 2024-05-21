@@ -24,16 +24,19 @@ public class SecurityConfig {
         //HttpSecurity -> 설정 (http에 설정)
         //1. 인증, 권한 설정 - url에 대해?
         http.authorizeHttpRequests(authz->authz
-                .requestMatchers("/ui/**").permitAll() //ui 아래 모든 경로는 인증 없이 접근 허용
-                .requestMatchers("/admin/**").hasRole("ADMIN") //ADMIN만 접근 가능
-                .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
-                //.anyRequest().authenticated()
+                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/book/**").authenticated()
+               //.requestMatchers("/ui/**").permitAll()//ui 아래 모든 경로는 인증 없이 접근 허용
+                //.requestMatchers("/admin/**").hasRole("ADMIN") //ADMIN만 접근 가능
+               // .requestMatchers("/user/**").hasAnyRole("USER","ADMIN")
+                .anyRequest().permitAll()
         )
         //http.authorizeHttpRequests(authz ->authz.); //url을 받는다
         //2. 로그인 폼 - 커스텀 @Controller 에서
                 .formLogin(form -> form
                         .loginPage("/ui/list") //form action ="/login 로그인 할 경로
                         .loginProcessingUrl("/login")// 이 서버로 오면 sc username, password라는 값 가져감
+                        //usernamepasswordauthenticationfilter 동작
                         .defaultSuccessUrl("/ui/list", true) //성공 후 갈 url
                 )
 
