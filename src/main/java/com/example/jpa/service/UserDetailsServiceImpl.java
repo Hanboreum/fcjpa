@@ -27,7 +27,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Member member = optional.get(); //회원정보 get
         return new CustomMember(member);//id  있으면 그 회원의 정보를 리턴해 패스워드 비교
         //UserDetails(Interface) --> User ( class, username, password,권한정보)
-        //이게 세션으로 드러감
-
+        //이게 세션으로 들어감
     }
 }
