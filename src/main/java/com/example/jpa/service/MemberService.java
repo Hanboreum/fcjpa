@@ -15,7 +15,7 @@ import java.util.Set;
 public class MemberService {
 
     private final MemberRespository memberRespository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final RoleService roleService;
 
     //회원가입 메서드 (패스워드 암호화, 권한 부여)
