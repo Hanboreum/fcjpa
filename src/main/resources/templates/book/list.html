@@ -39,7 +39,6 @@ Authentication 을 가져와야함                            인증여부 판�
 <a th:href="@{/member/manager}"th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MANAGER'',''ROLE_ADMIN'')')}">manager</a>
 <a th:href="@{/member/admin}"th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">user</a>
 <hr/>
-<hr/>
 <div sec:authorize="hasAuthority('ROLE_USER')">
     <a th:href="@{/member/user}">USER</a>
 </div>
