@@ -27,8 +27,8 @@ Authentication 을 가져와야함                            인증여부 판�
 </form>
 <!-- 인증에 성공한 경우-->
 <div th:if="${#authorization.expression('isAuthenticated()')}">
-    <ul>
-        <li>ROLE_USER</li>
+    <ul> <!-- user에 있는 권한-->
+        <li th:each="role: ${#authentication.authorities}" th:text="${role.authority}">?</li>
         <li>ROLE_MANAGER</li>
         <li>ROLE_ADMIN</li>
     </ul>
