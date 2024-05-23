@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private MemberRespository memberRespository;
+    private final MemberRespository memberRespository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,5 +30,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 패스워드 비교해 security context holder 에 저장
         //UserDetails(Interface) --> User ( class, username, password,권한정보)
         //이게 세션으로 들어감
+
     }//CustomMember 와 Member 관계
 }
