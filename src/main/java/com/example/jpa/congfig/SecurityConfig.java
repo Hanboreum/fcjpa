@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout") //이 url 로 넘어오면 sc가 로그아웃 처리)
                         //<form action ="/logout method = "post">,<a href="/logout">logout</a>
-                        .logoutSuccessUrl("/ut/list")
+                        .logoutSuccessUrl("/ui/list")
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) //get방식으<a>로 로그아웃 할 때
                         .clearAuthentication(true) //securityContextHolder(session) 에 사용자 정보를 보관
                         .deleteCookies("JSESSIONID")
