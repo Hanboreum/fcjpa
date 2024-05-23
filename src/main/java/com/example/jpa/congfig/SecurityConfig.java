@@ -2,8 +2,11 @@ package com.example.jpa.congfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -20,7 +23,9 @@ public class SecurityConfig {
     //2. security filter chain 객체 생성-> 인증 매니저(관리) -> userDetailsService(DB연동 서비스 클래스) -> 구현체
     //http://localhost:8080/ui/~
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{ //요청을 받는 객체
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
+        /*
+        //요청을 받는 객체
         //HttpSecurity -> 설정 (http에 설정)
         //1. 인증, 권한 설정 - url에 대해?
         http.authorizeHttpRequests(authz->authz
@@ -52,6 +57,34 @@ public class SecurityConfig {
                 );
 
         return http.build();
-    }
 
+         */
+
+        //폼 방식 아님
+        http
+                .formLogin(form->form.disable())
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //세성 미사용
+                .httpBasic(hb-> hb.disable())
+                .csrf(csrf->csrf.disable())
+                .authorizeHttpRequests(authz->authz        //new SecurityContentHolder (session)이 만들어져야
+                        .requestMatchers("/api/v1/user/**").hasAnyRole("USER","MANAGER","ADMIN")
+                        .requestMatchers("/api/v1/manager/**").hasAnyRole("MANAGER","ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
+                )
+                .apply(new MyCustomDsl());
+
+        return http.build();
+
+    }
+    //인증에 필요한 filter 동작시키기 위해 사용자 정의 클래스 등록(DSL)
+    //UserNamePasswordAuthenticationFilter 가 동작하지 못한다.
+    public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity>{
+
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+            //Authentication Manager 얻어오기
+            AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+            //UsernamePasswordAuthenticationManagerFilter 실행 할 수 있다.
+        }
+    }
 }
