@@ -24,9 +24,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if( !optional.isPresent()){
             throw new UsernameNotFoundException("user not found");
         }
-        Member member = optional.get(); //회원정보 get
-        return new CustomMember(member);//id  있으면 그 회원의 정보를 리턴해 패스워드 비교
+        Member member = optional.get(); //username에 해당하는 사용자 정보를 가져옴. 회원정보 get
+        //HttpSession -> Security contextHolder
+        return new CustomMember(member);//password 체크 . id  있으면 그 회원의 정보를 리턴해 패스워드 비교
+        // 패스워드 비교해 security context holder 에 저장
         //UserDetails(Interface) --> User ( class, username, password,권한정보)
         //이게 세션으로 들어감
-    }
+    }//CustomMember 와 Member 관계
 }
