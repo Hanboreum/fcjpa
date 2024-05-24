@@ -1,5 +1,6 @@
 package com.example.jpa.congfig;
 
+import com.example.jpa.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -85,6 +86,7 @@ public class SecurityConfig {
             //Authentication Manager 얻어오기
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             //UsernamePasswordAuthenticationManagerFilter 실행 할 수 있다.
+            http.addFilter(new JwtAuthenticationFilter(authenticationManager));
         }
     }
 }
