@@ -1,6 +1,10 @@
 package com.example.jpa.congfig;
 
 import com.example.jpa.jwt.JwtAuthenticationFilter;
+import com.example.jpa.jwt.JwtAuthorizationFilter;
+import com.example.jpa.repository.MemberRespository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +18,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity //안해줘도 boot가 해준다
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final MemberRespository memberRespository;
 
     //1.비밀번호 암호화 빈 설정
     @Bean //객체 생성 명령 어노테이션
@@ -68,9 +75,9 @@ public class SecurityConfig {
                 .httpBasic(hb-> hb.disable())
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(authz->authz        //new SecurityContentHolder (session)이 만들어져야
-                        .requestMatchers("/api/v1/user/**").hasAnyRole("USER","MANAGER","ADMIN")
-                        .requestMatchers("/api/v1/manager/**").hasAnyRole("MANAGER","ADMIN")
-                        .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/jwt/v1/user/**").hasAnyRole("USER","MANAGER","ADMIN")
+                        .requestMatchers("/jwt/v1/manager/**").hasAnyRole("MANAGER","ADMIN")
+                        .requestMatchers("/jwt/v1/admin/**").hasAnyRole("ADMIN")
                 )
                 .apply(new MyCustomDsl());
 
@@ -86,7 +93,10 @@ public class SecurityConfig {
             //Authentication Manager 얻어오기
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             //UsernamePasswordAuthenticationManagerFilter 실행 할 수 있다.
-            http.addFilter(new JwtAuthenticationFilter(authenticationManager));
+            http
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberRespository));
+
         }
     }
 }
